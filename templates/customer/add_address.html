@@ -1,0 +1,107 @@
+
+{% extends "base.html" %}
+
+{% block title %}Add Address{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/locate-button.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Add New Address</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('customer.add_address') }}" method="post">
+                    <div class="mb-3">
+                        <label for="address_search" class="form-label">Search Address</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="address_search" placeholder="Enter a location or click on the map">
+                            <button class="btn locate-me-btn" type="button" id="locate-me-btn">
+                                <i class="bi bi-geo-alt"></i> Locate Me
+                            </button>
+                            <button class="btn btn-outline-primary" type="button" id="clear-map-btn">
+                                <i class="bi bi-x-lg"></i> Clear
+                            </button>
+                        </div>
+                        <div class="form-text">Type an address or click directly on the map</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div id="map-container" class="rounded" style="height: 300px; width: 100%;"></div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address_line" class="form-label">Address Line</label>
+                        <input type="text" class="form-control" id="address_line" name="address_line" required>
+                        <div class="form-text">Street address, building, apartment number</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-5">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" name="city" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">State/Province</label>
+                            <input type="text" class="form-control" id="state" name="state" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="postal_code" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="postal_code" name="postal_code" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden fields for coordinates -->
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Address</button>
+                        <a href="{{ url_for('customer.dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Load our custom Google Maps JavaScript -->
+<script src="{{ url_for('static', filename='js/google-maps.js') }}"></script>
+
+<!-- Load Google Maps API with callback to our initialization function -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZs6modtRTla27S06m6Vr_YRLyfOFwnC0&libraries=places&callback=initGoogleMaps"></script>
+
+<script>
+    // Add event listener for the clear button
+    document.getElementById('clear-map-btn').addEventListener('click', function() {
+        // Clear the address fields
+        document.getElementById('address_search').value = '';
+        document.getElementById('address_line').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('state').value = '';
+        document.getElementById('postal_code').value = '';
+        document.getElementById('latitude').value = '';
+        document.getElementById('longitude').value = '';
+        
+        // Remove the marker if it exists
+        if (marker) {
+            marker.setMap(null);
+            marker = null;
+        }
+        
+        // Reset the map view
+        map.setCenter({ lat: 53.1424, lng: -7.6921 });
+        map.setZoom(7);
+    });
+    
+    // Add event listener for the locate me button
+    document.getElementById('locate-me-btn').addEventListener('click', function() {
+        // Call the getCurrentLocation function from google-maps.js
+        getCurrentLocation();
+    });
+</script>
+{% endblock %}

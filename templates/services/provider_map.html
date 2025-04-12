@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Service Providers Map{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/locate-button.css') }}">
+<style>
+    #provider-map-container {
+        height: 500px;
+        width: 100%;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: var(--box-shadow);
+    }
+    
+    #provider-locate-me-container {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 5;
+    }
+    
+    .provider-controls {
+        background-color: var(--surface-color);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-window {
+        padding: 5px;
+        max-width: 250px;
+    }
+    
+    .info-window h5 {
+        margin-bottom: 5px;
+        color: var(--primary-color);
+    }
+    
+    .info-window p {
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Service Providers Map</h2>
+        <p class="text-muted">Find service providers near you or in specific areas</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="position-relative">
+            <div id="provider-map-container"></div>
+            <div id="provider-locate-me-container"></div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="provider-controls">
+            <h5>Filter Providers</h5>
+            <form id="provider-filter-form">
+                <div class="mb-3">
+                    <label for="service-category" class="form-label">Service Category</label>
+                    <select class="form-select" id="service-category">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="radius" class="form-label">Search Radius (km)</label>
+                    <input type="range" class="form-range" id="radius" min="1" max="50" value="10">
+                    <div class="d-flex justify-content-between">
+                        <span>1km</span>
+                        <span id="radius-value">10km</span>
+                        <span>50km</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="min-rating" class="form-label">Minimum Rating</label>
+                    <select class="form-select" id="min-rating">
+                        <option value="0">Any Rating</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="nearby-providers-container">
+            <div class="alert alert-info">Use the "Locate Me" button to find providers near you.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Provider data will be loaded from the server -->
+<script>
+    // This will be populated by the server with actual provider data
+    const providerData = {{ providers_json|safe }};
+</script>
+
+<!-- Load our custom Provider Map JavaScript -->
+<script src="{{ url_for('static', filename='js/provider-map.js') }}"></script>
+
+<!-- Load Google Maps API with callback to our initialization function -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZs6modtRTla27S06m6Vr_YRLyfOFwnC0&libraries=places&callback=initProviderMap"></script>
+
+<script>
+    // Update radius value display
+    document.getElementById('radius').addEventListener('input', function() {
+        document.getElementById('radius-value').textContent = this.value + 'km';
+    });
+    
+    // Handle filter form submission
+    document.getElementById('provider-filter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const categoryId = document.getElementById('service-category').value;
+        const radius = document.getElementById('radius').value;
+        const minRating = document.getElementById('min-rating').value;
+        
+        // Filter providers based on criteria
+        let filteredProviders = providerData;
+        
+        if (categoryId) {
+            filteredProviders = filteredProviders.filter(provider => 
+                provider.categories && provider.categories.includes(parseInt(categoryId)));
+        }
+        
+        if (minRating > 0) {
+            filteredProviders = filteredProviders.filter(provider => 
+                provider.rating && provider.rating >= parseFloat(minRating));
+        }
+        
+        // Load filtered providers on map
+        loadProviders(filteredProviders);
+        
+        // If user location is known, find nearby providers
+        const userMarker = providerMarkers.find(marker => marker.getTitle() === 'Your Location');
+        if (userMarker) {
+            findNearbyProviders(userMarker.getPosition(), parseInt(radius));
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+/* Locate Me Button Styling */
+.locate-me-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.locate-me-btn:hover {
+    background-color: #3050d0;
+    border-color: #3050d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
+}
+
+.locate-me-btn i {
+    margin-right: 5px;
+}
+
+.locate-me-btn:disabled {
+    background-color: #a0a0a0;
+    border-color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+/* Pulse animation for the locating state */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.locating {
+    animation: pulse 1.5s infinite;
+}

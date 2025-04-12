@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Our Services</h2>
+        <p class="text-muted">Explore our wide range of professional home services</p>
+    </div>
+    {% if user and session.get('user_type') == 'provider' %}
+    <div class="col-md-4 text-end">
+        <a href="{{ url_for('provider.add_service') }}" class="btn btn-primary">Add New Service</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for category in categories %}
+    <div class="col">
+        <div class="card h-100 service-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <p class="card-text">{{ category.description }}</p>
+                <a href="{{ url_for('service.service_detail', category_id=category.id) }}" class="btn btn-sm btn-outline-primary">View Details (€)</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not categories %}
+<div class="alert alert-info">
+    <p class="mb-0">No service categories available at the moment.</p>
+</div>
+{% endif %}
+{% endblock %}
