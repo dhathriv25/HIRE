@@ -12,6 +12,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def calculate_distance(lat1, lon1, lat2, lon2):
+
+    
     """
     Calculate the great circle distance between two points 
     on the earth (specified in decimal degrees) using Haversine formula
@@ -24,6 +26,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
         
     Returns:
         Distance in kilometers
+    
     """
     # Convert decimal degrees to radians
     lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
@@ -36,6 +39,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     r = 6371  # Radius of earth in kilometers
     
     return c * r
+    
 
 def calculate_provider_score(provider, customer_address, service_category_id, avg_prices):
     """
