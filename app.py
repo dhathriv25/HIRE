@@ -19,6 +19,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize SQLAlchemy with the app
 db.init_app(app)
 
+# Add context processor to make environment variables available to templates
+@app.context_processor
+def inject_env_variables():
+    return dict(
+        GOOGLE_MAPS_API_KEY=os.getenv('GOOGLE_MAPS_API_KEY')
+    )
+
 # Configure logging
 if not os.path.exists('logs'):
     os.mkdir('logs')

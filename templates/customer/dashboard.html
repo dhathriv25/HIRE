@@ -171,7 +171,7 @@
 </div>
 {% endblock %}
 
-<script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=console.debug&libraries=maps,marker&v=beta"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initProviderMap"></script>
 <style>
 gmp-map {
     height: 100%;

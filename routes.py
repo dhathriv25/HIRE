@@ -111,6 +111,26 @@ def logout():
     flash('You have been logged out', 'success')
     return redirect(url_for('main.index'))
 
+@main_bp.route('/get-providers', methods=['GET'])
+def get_providers():
+    """Fetch all providers with their locations for the map"""
+    providers = Provider.query.filter_by(is_verified=True, is_available=True).all()
+    
+    provider_data = []
+    for provider in providers:
+        address = Address.query.filter_by(provider_id=provider.id).first()
+        if address and address.latitude and address.longitude:
+            provider_data.append({
+                'id': provider.id,
+                'name': provider.get_full_name(),
+                'rating': provider.avg_rating,
+                'categories': [pc.category_id for pc in ProviderCategory.query.filter_by(provider_id=provider.id).all()],
+                'lat': address.latitude,
+                'lng': address.longitude
+            })
+    
+    return {'providers': provider_data}
+
 @main_bp.route('/search', methods=['GET'])
 def search_providers():
     """Search for providers based on service category and location"""

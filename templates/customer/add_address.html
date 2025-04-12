@@ -73,7 +73,7 @@
 <script src="{{ url_for('static', filename='js/google-maps.js') }}"></script>
 
 <!-- Load Google Maps API with callback to our initialization function -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZs6modtRTla27S06m6Vr_YRLyfOFwnC0&libraries=places&callback=initGoogleMaps"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initProviderMap"></script>
 
 <script>
     // Add event listener for the clear button
