@@ -37,3 +37,4 @@ Email: siobhan.doherty@icloud.com, Password: password
 Email: siobhan.kelly@icloud.com, Password: password
 Email: siobhan.walsh@yahoo.com, Password: password
 Email: sophie.fitzgerald@yahoo.com, Password: password
+Email: dhathri.dha33@gmail.com, Password: password
