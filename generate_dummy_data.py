@@ -1,4 +1,3 @@
-
 """Script to generate dummy data for the HIRE platform.
 
 This script creates:
@@ -18,8 +17,21 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Database path
-db_path = os.path.join('instance', 'hire.db')
+# Define potential database paths
+root_db_path = 'hire.db'
+instance_db_path = os.path.join('instance', 'hire.db')
+
+# Choose the first database that exists, prioritizing root path
+if os.path.exists(root_db_path):
+    db_path = root_db_path
+    print(f"Using database at root: {root_db_path}")
+elif os.path.exists(instance_db_path):
+    db_path = instance_db_path
+    print(f"Using database in instance folder: {instance_db_path}")
+else:
+    print("Error: No database file found. Please run 'python -m flask run' first to create the database.")
+    print(f"Checked locations: {root_db_path}, {instance_db_path}")
+    exit(1)
 
 # Dublin postal codes (Eircodes)
 dublin_postcodes = [
@@ -74,15 +86,9 @@ def generate_address():
 
 def generate_dummy_data():
     """Generate and insert dummy data into the database"""
-    print(f"Connecting to database at: {db_path}")
-    
-    # Check if database exists
-    if not os.path.exists(db_path):
-        print(f"Error: Database file not found at {db_path}")
-        print("Please run 'python -m flask run' first to create the database.")
-        return
     
     # Connect to database
+    print(f"Connecting to database at: {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
@@ -132,7 +138,7 @@ def generate_dummy_data():
             last_name = random.choice(last_names)
             email = generate_email(first_name, last_name)
             phone = generate_phone()
-            password_hash = generate_password_hash('password123')
+            password_hash = generate_password_hash('password')
             
             # Insert customer
             cursor.execute(
@@ -185,7 +191,7 @@ def generate_dummy_data():
             last_name = random.choice(all_last_names)
             email = generate_email(first_name, last_name)
             phone = generate_phone()
-            password_hash = generate_password_hash('password123')
+            password_hash = generate_password_hash('password')
             verification_document = f"ID_{first_name}_{last_name}_{random.randint(1000, 9999)}.pdf"
             experience_years = random.randint(1, 20)
             
@@ -264,14 +270,14 @@ def generate_dummy_data():
         cursor.execute("SELECT email FROM customers")
         customer_emails = cursor.fetchall()
         for email in customer_emails:
-            print(f"Email: {email[0]}, Password: password123")
+            print(f"Email: {email[0]}, Password: password")
         
         # Print provider credentials
         print("\nPROVIDER CREDENTIALS:")
         cursor.execute("SELECT email FROM providers")
         provider_emails = cursor.fetchall()
         for email in provider_emails:
-            print(f"Email: {email[0]}, Password: password123")
+            print(f"Email: {email[0]}, Password: password")
         
     except sqlite3.Error as e:
         conn.rollback()
