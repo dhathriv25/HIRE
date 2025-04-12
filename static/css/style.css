@@ -2,17 +2,17 @@
 
 /* Base Styles */
 :root {
-    --primary-color: #4361ee;
-    --secondary-color: #f72585;
-    --accent-color: #7209b7;
+    --primary-color: #58caf0d6;
+    --secondary-color: #200b7bb7;
+    --accent-color: #3586a1d6;
     --light-color: #121212;
-    --dark-color: #ffffff;
-    --darker-color: #f8f9fa;
-    --surface-color: #ffffff;
-    --surface-color-hover: #f0f0f0;
+    --dark-color: #dad9e1;
+    --darker-color: #b0cfdb;
+    --surface-color: #edf2f4f7;
+    --surface-color-hover: #cae6ef;
     --success-color: #2dc653;
     --warning-color: #ffbe0b;
-    --danger-color: #e5383b;
+    --danger-color: #a52b2d8e;
     --border-radius: 0.5rem;
     --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
@@ -24,7 +24,7 @@ body {
     flex-direction: column;
     font-family: 'DotGothic16', sans-serif;
     color: var(--light-color);
-    background-color: var(--dark-color);
+    background-color: var(--surface-color);
     line-height: 1.6;
 }
 
@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'DotGothic16', sans-serif;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--light-color);
+    color: black;
 }
 
 .display-4 {
@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Navbar Styling */
 .navbar {
-    background: linear-gradient(135deg, #f8f9fa, #ffffff) !important;
+    background: linear-gradient(135deg, #58caf0d6, #dad9e1  ) !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 1rem 0;
@@ -71,8 +71,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
-    color: var(--primary-color);
-    background-color: rgba(0, 0, 0, 0.05);
+    color: black;
+    background-color: #f5efefa5;
     transform: translateY(-2px);
 }
 
@@ -92,8 +92,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown-item:hover {
-    background-color: var(--surface-color-hover);
-    color: var(--primary-color);
+    background-color: var(--darker-color);
+    color: black;
 }
 
 /* Buttons */
@@ -114,16 +114,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-    background-color: #3050d0;
-    border-color: #3050d0;
+    background-color: #3b96c7;
+    border-color: #010204;
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
 }
 
 .btn-outline-primary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-    background-color: transparent;
+    color: #266da6cc;
+    border-color: #266da6cc;
+    background-color: var(--surface-color);
 }
 
 .btn-outline-primary:hover {
@@ -141,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Cards */
 .card {
     border-radius: var(--border-radius);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     background-color: var(--surface-color);
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
     transition: var(--transition);
@@ -155,16 +155,32 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-header {
-    background-color: rgba(0, 0, 0, 0.03);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-color);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
     font-weight: 600;
-    color: var(--light-color);
+}
+
+.card-title{
+    color: black;
+    
+    
+}
+
+.form-text{
+    color: gray;
 }
 
 .service-card:hover {
     border-color: var(--primary-color);
     border-width: 2px;
 }
+
+.form-label {
+    color: black;
+    background-color: var(--surface-color);
+}
+
+
 
 /* Provider Rating */
 .provider-rating {
@@ -251,7 +267,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--border-radius);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
-    background-color: var(--surface-color);
+    background-color: var(--darker-color);
     color: var(--light-color);
 }
 
@@ -294,11 +310,14 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 767.98px) {
     .card-title {
         font-size: 1.1rem;
+        
     }
     
     .btn-group-sm > .btn, .btn-sm {
         padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
+        color: #123a5bfb;
+        border-color: var(--secondary-color);
     }
     
     .display-4 {
