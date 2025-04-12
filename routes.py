@@ -418,7 +418,8 @@ def register():
             last_name=last_name,
             password_hash=generate_password_hash(password),
             experience_years=experience_years,
-            verification_document='verification_placeholder.pdf'  # Placeholder
+            verification_document='verification_placeholder.pdf'  
+            # This is a scalable option to verify each provider with an identity document before being able to access the application : Fraud prevention method
         )
         db.session.add(provider)
         db.session.commit()
