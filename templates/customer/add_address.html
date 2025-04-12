@@ -72,11 +72,8 @@
 <!-- Load our custom Google Maps JavaScript -->
 <script src="{{ url_for('static', filename='js/google-maps.js') }}"></script>
 
-<!-- Load provider map JavaScript which contains the initProviderMap function -->
-<script src="{{ url_for('static', filename='js/provider-map.js') }}"></script>
-
 <!-- Load Google Maps API with callback to our initialization function -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initGoogleMaps"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initProviderMap"></script>
 
 <script>
     // Add event listener for the clear button
