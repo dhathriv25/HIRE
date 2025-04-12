@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # The database is in the 'instance' folder
-db_path = os.path.join('instance', 'hire.db')
+db_path = os.path.join('hire.db')
 
 print(f"Connecting to database at: {db_path}")
 
@@ -40,15 +40,17 @@ try:
     # We'll manually specify the order to ensure dependencies are handled correctly
     
     # List of tables to clear in the correct order
+    '''
+    
+    '''
     tables_to_clear = [
         "otp_verifications", 
         "payments",
         "bookings",
         "addresses",
         "provider_categories",
-        "customers", 
+        "customers",
         "providers"
-        # Keeping service_categories as these are needed for the application
     ]
     
     # Clear each table
