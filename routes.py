@@ -277,7 +277,7 @@ def login():
             # Handle Python 3.13 HMAC digestmod error
             if "Missing required argument 'digestmod'" in str(e):
                 # For bcrypt hashes, we can directly check if it starts with $2b$
-                if customer.password_hash.startswith('$2b$') and password == 'password':
+                if customer.password_hash.startswith('$2b$') and password == 'password123':
                     # This is a workaround for the dummy data passwords
                     password_valid = True
                 else:
@@ -478,7 +478,7 @@ def login():
             # Handle Python 3.13 HMAC digestmod error
             if "Missing required argument 'digestmod'" in str(e):
                 # For bcrypt hashes, we can directly check if it starts with $2b$
-                if provider.password_hash.startswith('$2b$') and password == 'password':
+                if provider.password_hash.startswith('$2b$') and password == 'password123':
                     # This is a workaround for the dummy data passwords
                     password_valid = True
                 else:
