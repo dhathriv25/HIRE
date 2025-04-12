@@ -112,14 +112,14 @@
 <!-- Provider data will be loaded from the server -->
 <script>
     // This will be populated by the server with actual provider data
-    const providerData = {{ providers_json|safe }};
+    const providerData = JSON.parse('{{ providers_json|tojson|safe }}');
 </script>
 
 <!-- Load our custom Provider Map JavaScript -->
 <script src="{{ url_for('static', filename='js/provider-map.js') }}"></script>
 
 <!-- Load Google Maps API with callback to our initialization function -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZs6modtRTla27S06m6Vr_YRLyfOFwnC0&libraries=places&callback=initProviderMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initProviderMap"></script>
 
 <script>
     // Update radius value display
