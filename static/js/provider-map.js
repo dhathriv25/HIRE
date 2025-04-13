@@ -87,7 +87,7 @@ function addProviderMarker(provider) {
             <h5>${provider.name}</h5>
             <p>${provider.address || 'Address not available'}</p>
             <p>Services: ${provider.services || 'Not specified'}</p>
-            <p>Rating: ${provider.rating ? `${provider.rating}/5` : 'Not rated yet'}</p>
+            <p>Rating: ${provider.avg_rating ? `${provider.avg_rating}/5` : 'Not rated yet'}</p>
             <a href="/services/provider/${provider.id}" class="btn btn-sm btn-primary">View Profile</a>
         </div>
     `;
@@ -309,7 +309,7 @@ function findNearbyProviders(location, radius = 10) {
                             <small>${provider.distance} km</small>
                         </div>
                         <p class="mb-1">${provider.services || 'Services not specified'}</p>
-                        <small>${provider.rating ? `Rating: ${provider.rating}/5` : 'Not rated yet'}</small>
+                        <small>${provider.avg_rating ? `Rating: ${provider.avg_rating}/5` : 'Not rated yet'}</small>
                     </a>
                 `;
             });

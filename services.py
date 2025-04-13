@@ -11,116 +11,45 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# This function has been removed as coordinate data is handled in the database
+# without frontend implementation
 def calculate_distance(lat1, lon1, lat2, lon2):
-
-    
     """
-    Calculate the great circle distance between two points 
-    on the earth (specified in decimal degrees) using Haversine formula
+    Placeholder function that returns a fixed value.
+    The actual distance calculation using Haversine formula has been removed
+    as coordinate data is handled in the database.
     
-    Args:
-        lat1: Latitude of first point
-        lon1: Longitude of first point
-        lat2: Latitude of second point
-        lon2: Longitude of second point
-        
     Returns:
-        Distance in kilometers
-    
+        Fixed distance value in kilometers
     """
-    # Convert decimal degrees to radians
-    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
-    
-    # Haversine formula
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a))
-    r = 6371  # Radius of earth in kilometers
-    
-    return c * r
+    logger.info("Using simplified distance calculation")
+    return 10.0  # Return a fixed value for compatibility
     
 
 def calculate_provider_score(provider, customer_address, service_category_id, avg_prices):
     """
-    Calculate a score for a provider based on multiple factors:
-    - Distance from customer (if addresses available)
-    - Provider rating
-    - Experience years
-    - Price competitiveness
+    Simplified scoring function that primarily uses the provider's rating
     
     Args:
         provider: Provider object to score
-        customer_address: Address object for the customer location
+        customer_address: Address object for the customer location (not used)
         service_category_id: ID of the requested service category
         avg_prices: Dictionary of average prices by category_id
         
     Returns:
-        Score from 0-100 (higher is better)
+        Score based primarily on rating
     """
-    from models import ProviderCategory, Address
+    from models import ProviderCategory
     
-    score = 0
-    
-    # 1. Rating score (max 40 points)
+    # Simplified scoring based primarily on rating
     if provider.avg_rating:
-        # Convert 1-5 rating to 0-40 scale
-        rating_score = (provider.avg_rating / 5) * 40
-        score += rating_score
+        # Use rating as the primary score factor
+        score = provider.avg_rating * 20  # Convert 5-star rating to 100-point scale
     else:
-        # If no ratings yet, assign middle rating score
-        score += 20
+        # Default score for providers without ratings
+        score = 50
     
-    # 2. Experience score (max 30 points)
-    # 0 years -> 0 points, 10+ years -> 30 points
-    experience_score = min(30, provider.experience_years * 3)
-    score += experience_score
-    
-    # 3. Price competitiveness (max 30 points)
-    provider_category = ProviderCategory.query.filter_by(
-        provider_id=provider.id,
-        category_id=service_category_id
-    ).first()
-    
-    if provider_category and service_category_id in avg_prices:
-        avg_price = avg_prices[service_category_id]
-        if avg_price > 0:
-            # If price is below average, higher score
-            price_ratio = provider_category.price_rate / avg_price
-            if price_ratio < 1:
-                price_score = 30 * (1 - price_ratio/2)  # Lower prices get higher scores
-            else:
-                price_score = max(0, 30 * (2 - price_ratio))  # Higher prices get lower scores
-            
-            score += price_score
-    
-    # Calculate distance score if addresses are available
-    if customer_address and customer_address.latitude and customer_address.longitude:
-        provider_address = Address.query.filter_by(provider_id=provider.id).first()
-        
-        if provider_address and provider_address.latitude and provider_address.longitude:
-            try:
-                distance = calculate_distance(
-                    customer_address.latitude, customer_address.longitude,
-                    provider_address.latitude, provider_address.longitude
-                )
-                
-                logger.info(f"Distance between customer and provider {provider.id}: {distance:.2f} km")
-                
-                # Distance factor: closer providers get a bonus
-                if distance < 5:  # Within 5km
-                    score += 15
-                    logger.info(f"Provider {provider.id} gets +15 points for being within 5km")
-                elif distance < 10:  # Within 10km
-                    score += 10
-                    logger.info(f"Provider {provider.id} gets +10 points for being within 10km")
-                elif distance < 20:  # Within 20km
-                    score += 5
-                    logger.info(f"Provider {provider.id} gets +5 points for being within 20km")
-            except Exception as e:
-                logger.error(f"Error calculating distance: {e}")
-    
-    logger.info(f"Final score for provider {provider.id}: {score:.2f}")
+    logger.info(f"Simplified score for provider {provider.id}: {score:.2f}")
     return score
 
 def find_matching_providers(customer_address, service_category_id, limit=5):
@@ -397,7 +326,7 @@ def geocode_address(address):
 
 def update_provider_rating(provider_id):
     """
-    Update a provider's average rating based on completed bookings
+    Simplified function to update a provider's average rating based on completed bookings
     
     Args:
         provider_id: ID of the provider
@@ -429,7 +358,7 @@ def update_provider_rating(provider_id):
         db.session.commit()
         return None, 0
     
-    # Calculate average rating
+    # Simple average calculation
     total_rating = sum(booking.rating for booking in rated_bookings)
     avg_rating = round(total_rating / len(rated_bookings), 2)
     

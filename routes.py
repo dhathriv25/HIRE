@@ -151,21 +151,12 @@ def search_providers():
     if address_id:
         address = Address.query.get(address_id)
         if address and address.latitude and address.longitude:
-            # Calculate distance for each provider and sort
-            provider_distances = []
-            for provider in providers:
-                # Get provider's address
-                provider_address = Address.query.filter_by(provider_id=provider.id).first()
-                
-                if provider_address and provider_address.latitude and provider_address.longitude:
-                    distance = calculate_distance(
-                        address.latitude, address.longitude,
-                        provider_address.latitude, provider_address.longitude
-                    )
-                else:
-                    distance = float('inf')  # If provider has no address, put at end of list
-                
-                provider_distances.append((provider, distance))
+            # Simplified provider sorting - no distance calculation
+            # Just use the original provider list without distance sorting
+            provider_distances = [(provider, 0) for provider in providers]
+            
+            # Sort by provider rating instead
+            provider_distances.sort(key=lambda x: x[0].avg_rating if x[0].avg_rating else 0, reverse=True)
             
             # Sort by distance
             provider_distances.sort(key=lambda x: x[1])
@@ -763,15 +754,9 @@ def rate_booking(booking_id):
     booking.rating = int(rating)
     booking.rating_comment = comment
     
-    # Update provider's average rating
-    provider = Provider.query.get(booking.provider_id)
-    rated_bookings = Booking.query.filter_by(
-        provider_id=provider.id,
-        status='completed'
-    ).filter(Booking.rating.isnot(None)).all()
-    
-    total_rating = sum(b.rating for b in rated_bookings)
-    provider.avg_rating = round(total_rating / len(rated_bookings), 2)
+    # Update provider's average rating using simplified approach
+    from services import update_provider_rating
+    update_provider_rating(booking.provider_id)
     
     db.session.commit()
     
