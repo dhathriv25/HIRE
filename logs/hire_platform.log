@@ -12,3 +12,8 @@
 2025-04-13 14:06:25,983 INFO: Creating database tables [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:53]
 2025-04-13 14:06:27,261 INFO: HIRE Platform startup [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:41]
 2025-04-13 14:06:27,311 INFO: Creating database tables [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:53]
+2025-04-13 15:43:25,124 INFO: HIRE Platform startup [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:41]
+2025-04-13 15:43:25,355 INFO: Creating database tables [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:53]
+2025-04-13 15:43:27,551 INFO: HIRE Platform startup [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:41]
+2025-04-13 15:43:27,588 INFO: Creating database tables [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:53]
+2025-04-13 15:43:40,356 INFO: 404 error: http://10.188.30.114:5000/favicon.ico [in D:\DBS\Semester 1\Advance Programming Techniques\CA\CA-2\APT_CA2_HIRE\HIRE\app.py:95]
