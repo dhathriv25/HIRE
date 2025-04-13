@@ -1,15 +1,53 @@
 #!/usr/bin/env python3
 """
-Simplified test runner for HIRE platform
+Improved test runner for HIRE platform
 
 Usage:
-  python simplified_run_tests.py
+  python improved_run_tests.py
 """
 
 import unittest
 import os
 import sys
 import time
+from io import StringIO
+from unittest.runner import TextTestResult
+
+# Custom TestResult class to add spacing and messages after tests
+class CustomTestResult(TextTestResult):
+    def addSuccess(self, test):
+        super().addSuccess(test)
+        self.stream.writeln("\n")
+        self.stream.writeln("Test completed SUCCESSFULLY")
+        self.stream.writeln("-" * 70)
+        self.stream.writeln("\n")
+
+    def addError(self, test, err):
+        super().addError(test, err)
+        self.stream.writeln("\n")
+        self.stream.writeln("Test FAILED with an error")
+        self.stream.writeln("-" * 70)
+        self.stream.writeln("\n")
+
+    def addFailure(self, test, err):
+        super().addFailure(test, err)
+        self.stream.writeln("\n")
+        self.stream.writeln(" Test FAILED")
+        self.stream.writeln("-" * 70)
+        self.stream.writeln("\n")
+
+    def addSkip(self, test, reason):
+        super().addSkip(test, reason)
+        self.stream.writeln("\n")
+        self.stream.writeln(f"Test SKIPPED: {reason}")
+        self.stream.writeln("-" * 70)
+        self.stream.writeln("\n")
+
+# Custom TestRunner that uses our CustomTestResult
+class CustomTestRunner(unittest.TextTestRunner):
+    def _makeResult(self):
+        return CustomTestResult(self.stream, self.descriptions, self.verbosity)
+
 
 def run_tests():
     """Run all tests in the current directory"""
@@ -27,7 +65,8 @@ def run_tests():
     loader = unittest.TestLoader()
     suite = loader.discover(current_dir, pattern="test_*.py")
     
-    runner = unittest.TextTestRunner(verbosity=2)
+    # Use our custom test runner
+    runner = CustomTestRunner(verbosity=2)
     result = runner.run(suite)
     
     # Print summary
@@ -48,4 +87,3 @@ def run_tests():
 if __name__ == '__main__':
     success = run_tests()
     sys.exit(0 if success else 1)
-
