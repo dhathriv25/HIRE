@@ -137,7 +137,7 @@ class TestServices(unittest.TestCase):
         # Distance should be around 0.42 km
         self.assertAlmostEqual(distance, 0.42, delta=0.1)
         
-        # Test with provider 2 (should be farther)
+        # Test with provider 2 (should be farther) or 
         lat3, lon3 = 53.348750, -6.270000  # Provider 2
         distance2 = calculate_distance(lat1, lon1, lat3, lon3)
         self.assertGreater(distance2, distance)
