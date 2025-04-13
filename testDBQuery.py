@@ -1,6 +1,6 @@
 import sqlite3
 import os
-db_path = os.path.join('instance', 'hire.db')
+db_path = os.path.join('hire.db')
 
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
