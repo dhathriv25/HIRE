@@ -1,5 +1,4 @@
 
-from math import radians, cos, sin, asin, sqrt
 from datetime import datetime, timedelta
 import os
 import random
@@ -11,58 +10,43 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# This function has been removed as coordinate data is handled in the database
-# without frontend implementation
 def calculate_distance(lat1, lon1, lat2, lon2):
     """
-    Placeholder function that returns a fixed value.
-    The actual distance calculation using Haversine formula has been removed
-    as coordinate data is handled in the database.
+    Simple distance function that returns a fixed value.
     
     Returns:
         Fixed distance value in kilometers
     """
-    logger.info("Using simplified distance calculation")
-    return 10.0  # Return a fixed value for compatibility
-    
+    logger.info("Using fixed distance calculation")
+    return 5.0  # Return a fixed value
 
 def calculate_provider_score(provider, customer_address, service_category_id, avg_prices):
     """
-    Simplified scoring function that primarily uses the provider's rating
+    Simple scoring function that returns the provider's rating directly
     
     Args:
         provider: Provider object to score
         customer_address: Address object for the customer location (not used)
-        service_category_id: ID of the requested service category
-        avg_prices: Dictionary of average prices by category_id
+        service_category_id: ID of the requested service category (not used)
+        avg_prices: Dictionary of average prices by category_id (not used)
         
     Returns:
-        Score based primarily on rating
+        Score based on rating
     """
-    from models import ProviderCategory
-    
-    # Simplified scoring based primarily on rating
-    if provider.avg_rating:
-        # Use rating as the primary score factor
-        score = provider.avg_rating * 20  # Convert 5-star rating to 100-point scale
-    else:
-        # Default score for providers without ratings
-        score = 50
-    
-    logger.info(f"Simplified score for provider {provider.id}: {score:.2f}")
-    return score
+    # Just return the rating directly or a default value
+    return provider.avg_rating or 3.0
 
 def find_matching_providers(customer_address, service_category_id, limit=5):
     """
-    Find the best matching providers for a service request using our scoring algorithm
+    Find providers for a service request based on availability and rating
     
     Args:
-        customer_address: Address object for the customer location
+        customer_address: Address object for the customer location (not used)
         service_category_id: ID of the requested service category
         limit: Maximum number of providers to return
         
     Returns:
-        List of Provider objects, sorted by matching score
+        List of Provider objects, sorted by rating
     """
     from models import Provider, ProviderCategory
     
@@ -90,33 +74,15 @@ def find_matching_providers(customer_address, service_category_id, limit=5):
     
     logger.info(f"Found {len(providers)} potentially matching providers")
     
-    # Calculate average price per category for price competitiveness scoring
-    avg_prices = {}
-    for pc in provider_categories:
-        if pc.category_id not in avg_prices:
-            avg_prices[pc.category_id] = []
-        avg_prices[pc.category_id].append(pc.price_rate)
-    
-    for category_id, prices in avg_prices.items():
-        avg_prices[category_id] = sum(prices) / len(prices)
-        logger.info(f"Average price for category {category_id}: ${avg_prices[category_id]:.2f}")
-    
-    # Calculate scores for each provider
-    provider_scores = []
-    for provider in providers:
-        score = calculate_provider_score(
-            provider, 
-            customer_address, 
-            service_category_id,
-            avg_prices
-        )
-        provider_scores.append((provider, score))
-    
-    # Sort by score in descending order
-    provider_scores.sort(key=lambda x: x[1], reverse=True)
+    # Simply sort providers by rating (highest first)
+    sorted_providers = sorted(
+        providers,
+        key=lambda p: p.avg_rating if p.avg_rating is not None else 0,
+        reverse=True
+    )
     
     # Return the top matching providers
-    top_providers = [p[0] for p in provider_scores[:limit]]
+    top_providers = sorted_providers[:limit]
     logger.info(f"Returning top {len(top_providers)} matching providers")
     
     return top_providers

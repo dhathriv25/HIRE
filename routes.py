@@ -13,7 +13,7 @@ from models import (
 )
 from services import (
     find_matching_providers, calculate_distance, 
-    verify_otp, generate_otp
+    verify_otp, generate_otp, update_provider_rating
 )
 
 # Create blueprints for different sections of the application

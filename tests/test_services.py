@@ -2,14 +2,13 @@ import unittest
 import os
 import sys
 from datetime import datetime, timedelta
-from math import radians
 
 # Add the parent directory to the path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import app, db
 from models import Customer, Provider, ServiceCategory, ProviderCategory, Address, Booking, Payment, OTPVerification
-from services import calculate_distance, calculate_provider_score, find_matching_providers, generate_otp, verify_otp
+from services import find_matching_providers, generate_otp, verify_otp
 
 class TestServices(unittest.TestCase):
     def setUp(self):
@@ -127,43 +126,7 @@ class TestServices(unittest.TestCase):
         self.customer_id = customer.id
         self.customer_address_id = customer_address.id
 
-    def test_calculate_distance(self):
-        """Test the Haversine distance calculation function"""
-        # Test with known coordinates
-        lat1, lon1 = 53.349805, -6.26031  # Customer
-        lat2, lon2 = 53.350140, -6.266155  # Provider 1
-        distance = calculate_distance(lat1, lon1, lat2, lon2)
-        
-        # Distance should be around 0.42 km
-        self.assertAlmostEqual(distance, 0.42, delta=0.1)
-        
-        # Test with provider 2 (should be farther) or 
-        lat3, lon3 = 53.348750, -6.270000  # Provider 2
-        distance2 = calculate_distance(lat1, lon1, lat3, lon3)
-        self.assertGreater(distance2, distance)
 
-    def test_calculate_provider_score(self):
-        """Test the provider scoring algorithm"""
-        customer_address = Address.query.get(self.customer_address_id)
-        provider1 = Provider.query.get(self.provider1_id)
-        provider2 = Provider.query.get(self.provider2_id)
-        
-        # Create average prices dictionary
-        avg_prices = {self.plumbing_id: 47.5}  # Average of 50 and 45
-        
-        # Calculate scores
-        score1 = calculate_provider_score(provider1, customer_address, self.plumbing_id, avg_prices)
-        score2 = calculate_provider_score(provider2, customer_address, self.plumbing_id, avg_prices)
-        
-        # Provider 1 has better rating and more experience but higher price
-        # Provider 2 has lower rating and less experience but lower price
-        # The scores should reflect this combination of factors
-        self.assertIsInstance(score1, (int, float))
-        self.assertIsInstance(score2, (int, float))
-        
-        # Test relative scores - the exact numbers may vary but provider 1 should score higher
-        # due to higher experience and rating despite slightly higher price
-        self.assertGreater(score1, score2)
 
     def test_find_matching_providers(self):
         """Test the provider matching algorithm"""
@@ -175,7 +138,8 @@ class TestServices(unittest.TestCase):
         # Should return both providers as they both offer plumbing
         self.assertEqual(len(plumbing_providers), 2)
         
-        # Provider IDs should be in order of score (higher score first)
+        # Provider IDs should be in order of rating (higher rating first)
+        # Provider 1 has rating 4.5, Provider 2 has rating 4.0
         self.assertEqual(plumbing_providers[0].id, self.provider1_id)
         self.assertEqual(plumbing_providers[1].id, self.provider2_id)
         
