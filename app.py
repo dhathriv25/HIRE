@@ -118,7 +118,7 @@ def utility_processor():
     def format_currency(value):
         """Format a number as currency"""
         if value is None:
-            return "$0.00"
+            return "€0.00"
         return f"${value:.2f}"
     
     return dict(

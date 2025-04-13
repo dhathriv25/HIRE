@@ -738,8 +738,8 @@ def process_stripe_payment(booking_id, token):
         # Create charge using Stripe
         charge = stripe.Charge.create(
             amount=amount,
-            currency='usd',
-            description=f'HIRE Platform - Booking #{booking.id}',
+            currency='eur',
+            description=f'HIRE - Booking #{booking.id}',
             source=token
         )
         
