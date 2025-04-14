@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
-Improved test runner for HIRE platform
-
-Usage:
-  python improved_run_tests.py
+run_tests.py
 """
 
 import unittest

@@ -254,59 +254,33 @@ function locateUserOnProviderMap() {
     }
 }
 
-// Calculate distance between two points
-function calculateDistance(point1, point2) {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (point2.lat - point1.lat) * Math.PI / 180;
-    const dLon = (point2.lng - point1.lng) * Math.PI / 180;
-    const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(point1.lat * Math.PI / 180) * Math.cos(point2.lat * Math.PI / 180) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    const distance = R * c; // Distance in km
-    return distance;
-}
+// Distance calculations have been removed as per requirements
 
 // Find providers near a location
 function findNearbyProviders(location, radius = 10) {
-    // Filter providers within radius
+    // Since distance calculations have been removed, we'll just show all providers
     const nearbyProviders = [];
     
     if (typeof providerData !== 'undefined' && providerData.length > 0) {
         providerData.forEach(provider => {
             if (provider.latitude && provider.longitude) {
-                const providerLocation = {
-                    lat: parseFloat(provider.latitude),
-                    lng: parseFloat(provider.longitude)
-                };
-                
-                const distance = calculateDistance(location, providerLocation);
-                
-                if (distance <= radius) {
-                    // Add distance to provider object
-                    provider.distance = distance.toFixed(1);
-                    nearbyProviders.push(provider);
-                }
+                // Add all providers to the list without distance filtering
+                nearbyProviders.push(provider);
             }
         });
     }
-    
-    // Sort by distance
-    nearbyProviders.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
     
     // Update UI with nearby providers if container exists
     const nearbyProvidersContainer = document.getElementById('nearby-providers-container');
     if (nearbyProvidersContainer) {
         if (nearbyProviders.length > 0) {
-            let html = '<h5>Nearby Service Providers</h5><div class="list-group">';
+            let html = '<h5>Service Providers</h5><div class="list-group">';
             
             nearbyProviders.forEach(provider => {
                 html += `
                     <a href="/services/provider/${provider.id}" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-1">${provider.name}</h6>
-                            <small>${provider.distance} km</small>
                         </div>
                         <p class="mb-1">${provider.services || 'Services not specified'}</p>
                         <small>${provider.avg_rating ? `Rating: ${provider.avg_rating}/5` : 'Not rated yet'}</small>
@@ -317,7 +291,7 @@ function findNearbyProviders(location, radius = 10) {
             html += '</div>';
             nearbyProvidersContainer.innerHTML = html;
         } else {
-            nearbyProvidersContainer.innerHTML = '<div class="alert alert-info">No service providers found within 10km of your location.</div>';
+            nearbyProvidersContainer.innerHTML = '<div class="alert alert-info">No service providers available in your area.</div>';
         }
     }
     
