@@ -76,7 +76,7 @@ def run_tests():
     print(f"  Successes: {result.testsRun - len(result.failures) - len(result.errors)}")
     print(f"  Failures: {len(result.failures)}")
     print(f"  Errors: {len(result.errors)}")
-    print("="*70)
+    print("="*70+"\n\n")
     
     # Return success if no failures or errors
     return len(result.failures) == 0 and len(result.errors) == 0
