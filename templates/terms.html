@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Terms and Conditions{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Terms and Conditions</h2>
+                </div>
+                <div class="card-body">
+                    <h4>HIRE Platform Terms of Service</h4>
+                    <p class="text-muted">Last Updated: {{ current_date }}</p>
+                    
+                    <h5 class="mt-4">1. Introduction</h5>
+                    <p>Welcome to HIRE Platform, a service marketplace developed for Advanced Programming Techniques at Dublin Business School. These Terms and Conditions govern your use of our platform and services.</p>
+                    
+                    <h5 class="mt-4">2. Acceptance of Terms</h5>
+                    <p>By accessing or using the HIRE Platform, you agree to be bound by these Terms and Conditions. If you do not agree to all the terms and conditions, you may not access or use our services.</p>
+                    
+                    <h5 class="mt-4">3. User Accounts</h5>
+                    <p>3.1. You must register for an account to use certain features of the platform.<br>
+                    3.2. You are responsible for maintaining the confidentiality of your account information.<br>
+                    3.3. You are responsible for all activities that occur under your account.</p>
+                    
+                    <h5 class="mt-4">4. Service Providers</h5>
+                    <p>4.1. Service providers must provide accurate information about their services and qualifications.<br>
+                    4.2. Service providers are responsible for the quality of services they provide.<br>
+                    4.3. The platform does not guarantee the quality of services provided by service providers.</p>
+                    
+                    <h5 class="mt-4">5. Customers</h5>
+                    <p>5.1. Customers must provide accurate information when booking services.<br>
+                    5.2. Customers are responsible for providing a safe environment for service providers to work in.<br>
+                    5.3. Customers agree to pay for services as agreed upon booking.</p>
+                    
+                    <h5 class="mt-4">6. Payments</h5>
+                    <p>6.1. All payments are processed through the platform.<br>
+                    6.2. The platform charges a service fee for each transaction.<br>
+                    6.3. Refunds are subject to our refund policy.</p>
+                    
+                    <h5 class="mt-4">7. Liability</h5>
+                    <p>7.1. The platform is not liable for any damages or losses resulting from the use of our services.<br>
+                    7.2. The platform is not responsible for the quality of services provided by service providers.<br>
+                    7.3. Users agree to indemnify the platform against any claims arising from their use of the services.</p>
+                    
+                    <h5 class="mt-4">8. Intellectual Property</h5>
+                    <p>8.1. All content on the platform is the property of HIRE Platform or its licensors.<br>
+                    8.2. Users may not use, copy, or distribute any content from the platform without permission.</p>
+                    
+                    <h5 class="mt-4">9. Academic Project Disclosure</h5>
+                    <p>This platform was developed as an academic project for the Advanced Programming Techniques module at Dublin Business School. It is not intended for commercial use.</p>
+                    
+                    <h5 class="mt-4">10. Contact Information</h5>
+                    <p>If you have any questions about these Terms and Conditions, please contact us at dedsec.binge@gmail.com</p>
+                    
+                    <div class="alert alert-info mt-4">
+                        <p class="mb-0"><strong>Note:</strong> This is an academic project developed for Advanced Programming Techniques at Dublin Business School. The HIRE Platform is not a real commercial service.</p>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('customer.register') }}" class="btn btn-primary">Back to Registration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

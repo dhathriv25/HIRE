@@ -170,19 +170,3 @@
     </div>
 </div>
 {% endblock %}
-
-<script async src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initProviderMap"></script>
-<style>
-gmp-map {
-    height: 100%;
-}
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-</style>
-<gmp-map center="40.12150192260742,-100.45039367675781" zoom="4" map-id="DEMO_MAP_ID">
-    <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
-</gmp-map>

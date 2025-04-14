@@ -12,8 +12,8 @@ from models import (
     Address, Booking, Payment, OTPVerification
 )
 from services import (
-    find_matching_providers, calculate_distance, 
-    verify_otp, generate_otp, update_provider_rating
+    find_matching_providers, verify_otp, 
+    generate_otp, update_provider_rating
 )
 
 # Create blueprints for different sections of the application
@@ -47,6 +47,12 @@ def index():
     categories = ServiceCategory.query.all()
     top_providers = Provider.query.filter(Provider.avg_rating.isnot(None)).order_by(Provider.avg_rating.desc()).limit(5).all()
     return render_template('index.html', categories=categories, top_providers=top_providers, user=get_current_user())
+
+@main_bp.route('/terms')
+def terms():
+    """Terms and conditions page"""
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    return render_template('terms.html', user=get_current_user(), current_date=current_date)
 
 @main_bp.route('/verify-otp', methods=['GET', 'POST'])
 def verify_otp_route():
@@ -147,20 +153,10 @@ def search_providers():
     provider_categories = ProviderCategory.query.filter_by(category_id=category_id).all()
     providers = [pc.provider for pc in provider_categories if pc.provider.is_verified and pc.provider.is_available]
     
-    # If address is provided, sort providers by distance
+    # If address is provided, sort providers by rating
     if address_id:
-        address = Address.query.get(address_id)
-        if address and address.latitude and address.longitude:
-            # Simplified provider sorting - no distance calculation
-            # Just use the original provider list without distance sorting
-            provider_distances = [(provider, 0) for provider in providers]
-            
-            # Sort by provider rating instead
-            provider_distances.sort(key=lambda x: x[0].avg_rating if x[0].avg_rating else 0, reverse=True)
-            
-            # Sort by distance
-            provider_distances.sort(key=lambda x: x[1])
-            providers = [p[0] for p in provider_distances]
+        # Sort providers by rating (highest first)
+        providers.sort(key=lambda p: p.avg_rating if p.avg_rating is not None else 0, reverse=True)
     
     return render_template(
         'search_results.html',

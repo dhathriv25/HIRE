@@ -10,31 +10,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def calculate_distance(lat1, lon1, lat2, lon2):
-    """
-    Simple distance function that returns a fixed value.
-    
-    Returns:
-        Fixed distance value in kilometers
-    """
-    logger.info("Using fixed distance calculation")
-    return 5.0  # Return a fixed value
-
-def calculate_provider_score(provider, customer_address, service_category_id, avg_prices):
-    """
-    Simple scoring function that returns the provider's rating directly
-    
-    Args:
-        provider: Provider object to score
-        customer_address: Address object for the customer location (not used)
-        service_category_id: ID of the requested service category (not used)
-        avg_prices: Dictionary of average prices by category_id (not used)
-        
-    Returns:
-        Score based on rating
-    """
-    # Just return the rating directly or a default value
-    return provider.avg_rating or 3.0
+# Distance calculation and provider scoring functions have been removed as they were non-functional
+# and not being used in the application
 
 def find_matching_providers(customer_address, service_category_id, limit=5):
     """

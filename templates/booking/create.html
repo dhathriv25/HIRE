@@ -85,7 +85,7 @@
                                 <span class="text-secondary">★</span>
                             {% endif %}
                         {% endfor %}
-                        ({{ provider.avg_rating }})
+                        ({{ provider.avg_rating|round(1) }})
                     {% else %}
                         No ratings yet
                     {% endif %}

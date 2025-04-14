@@ -208,8 +208,8 @@
                                 {% else %}
                                     <span class="text-secondary">★</span>
                                 {% endif %}
-                            {% endfor %}
-                            ({{ booking.provider.avg_rating }})
+                             {% endfor %}
+                            ({{ booking.provider.avg_rating|round(1) }})
                         {% else %}
                             No ratings yet
                         {% endif %}
