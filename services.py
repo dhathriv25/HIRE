@@ -220,52 +220,7 @@ def verify_otp(user_id, entered_otp, user_type='customer'):
     logger.info(f"OTP verified successfully for {user_type} {user_id}")
     return True
 
-def geocode_address(address):
-    """
-    Geocode an address using the OpenStreetMap Nominatim API
-    
-    Args:
-        address: Address object to geocode
-        
-    Returns:
-        (success, error) tuple
-        success: True if geocoding was successful, False otherwise
-        error: Error message if geocoding failed, None otherwise
-    """
-    logger.info(f"Geocoding address: {address.get_full_address()}")
-    
-    full_address = address.get_full_address()
-    
-    try:
-        # Call the geocoding API
-        params = {
-            'q': full_address,
-            'format': 'json',
-            'limit': 1
-        }
-        headers = {
-            'User-Agent': 'HIRE Platform/1.0'
-        }
-        
-        logger.info(f"Sending request to Nominatim API: {full_address}")
-        response = requests.get('https://nominatim.openstreetmap.org/search', params=params, headers=headers)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                address.latitude = float(data[0]['lat'])
-                address.longitude = float(data[0]['lon'])
-                logger.info(f"Geocoded successfully: lat={address.latitude}, lon={address.longitude}")
-                return True, None
-            else:
-                logger.warning(f"No geocoding results found for: {full_address}")
-                return False, "No results found for this address"
-        else:
-            logger.error(f"Geocoding API returned status code {response.status_code}")
-            return False, f"API error: {response.status_code}"
-    except Exception as e:
-        logger.error(f"Geocoding error: {str(e)}")
-        return False, f"Geocoding error: {str(e)}"
+
 
 def update_provider_rating(provider_id):
     """

@@ -9,7 +9,7 @@ def drop_database():
     print("Dropping HIRE database...")
     
     # Database files to remove
-    db_files = ['hire.db']
+    db_files = ["hire.db"]
     dropped = False
     
     # Remove each database file if it exists
