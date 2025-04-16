@@ -27,7 +27,7 @@
                             <option value="" selected disabled>Select a service</option>
                             {% for pc in provider_categories %}
                                 <option value="{{ pc.category_id }}" {% if request.args.get('category_id')|int == pc.category_id %}selected{% endif %}>
-                                    {{ pc.category.name }} - ${{ pc.price_rate }}
+                                    {{ pc.category.name }} - €{{ pc.price_rate }}
                                 </option>
                             {% endfor %}
                         </select>

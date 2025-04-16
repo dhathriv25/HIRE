@@ -331,6 +331,7 @@ function getAddressComponent(components, type) {
 
 // Get current location using browser's geolocation API
 function getCurrentLocation() {
+    console.log('getCurrentLocation called');
     if (navigator.geolocation) {
         // Show loading indicator or message
         const locateBtn = document.getElementById('locate-me-btn');
@@ -342,9 +343,11 @@ function getCurrentLocation() {
         // Create a toast notification
         showNotification('Locating your position...', 'info');
         
+        console.log('Requesting geolocation...');
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 // Success callback
+                console.log('Geolocation success:', position.coords);
                 const currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
@@ -370,6 +373,7 @@ function getCurrentLocation() {
             },
             function(error) {
                 // Error callback
+                console.error('Geolocation error:', error);
                 let errorMessage = 'Unable to retrieve your location. ';
                 
                 switch(error.code) {
@@ -402,6 +406,7 @@ function getCurrentLocation() {
             }
         );
     } else {
+        console.error('Geolocation not supported');
         showNotification('Geolocation is not supported by this browser.', 'error');
     }
 }
